@@ -10,10 +10,14 @@ line = sr.ReadLine();
 int player1Wins = 0;
 while (line != null)
 {
+    // split line into 2char elements
     var split = line.Split(' ');
+
+    // split into two parts - one for each player
     var split1 = split.Take(new Range(0, 5));
     var split2 = split.Take(new Range(5, 10));
 
+    // create card objects from 2 chars
     var hand1 = new Card[5];
     var hand2 = new Card[5];
     int k = 0;
@@ -23,7 +27,8 @@ while (line != null)
     foreach (var str in split2)
         hand2[k++] = new Card(str);
 
-    if ((new Hand(hand1)).CompareTo(new Hand(hand2)) > 0)
+    // create hands and compare them
+    if (new Hand(hand1).CompareTo(new Hand(hand2)) > 0)
         player1Wins++;
 
 
