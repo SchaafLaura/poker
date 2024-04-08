@@ -66,7 +66,6 @@ class Hand : IComparable
     }
 
     /*TODO:
-     * full house
      * two pair
      */
 
