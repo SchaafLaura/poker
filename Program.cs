@@ -50,7 +50,7 @@ class Hand : IComparable
 
     public int CompareTo(object? obj)
     {
-        if (obj is not Card)
+        if (obj is not Hand)
             return -1;
         if (obj == this)
             return 0;
