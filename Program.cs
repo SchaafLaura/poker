@@ -30,8 +30,8 @@ while (line != null)
     // create hands and compare them
     if (new Hand(hand1).CompareTo(new Hand(hand2)) > 0)
         player1Wins++;
-
-
+    
+    // read the next line from the file
     line = sr.ReadLine();
 }
 sr.Close();
