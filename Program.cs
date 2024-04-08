@@ -1,11 +1,40 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 // See https://projecteuler.net/problem=54
-Console.WriteLine("Haiiii :3333");
 
-Card a = new Card("");
-Card b = new Card("");
+string line;
+StreamReader sr = new StreamReader("0054_poker.txt");
+line = sr.ReadLine();
 
-int test = a.CompareTo(b);
+while (line != null)
+{
+    var split = line.Split(' ');
+    var hand1 = split.Take(new Range(0, 4));
+    var hand2 = split.Take(new Range(5, 10));
+
+    string h1 = "";
+    foreach(var str in hand1)
+        h1 += str;
+
+    string h2 = "";
+    foreach (var str in hand2)
+        h2 += str;
+
+    Console.WriteLine(h1 + "-" + h2);
+    Console.WriteLine(line);
+    line = sr.ReadLine();
+}
+sr.Close();
+Console.ReadLine();
+
+
+
+
+
+
+
+
 
 class Hand : IComparable
 {
