@@ -65,11 +65,6 @@ class Hand : IComparable
         return Rank.HIGH_CARD;
     }
 
-    /*TODO:
-     * two pair
-     */
-
-
     private bool IsTwoPair()
     {
         var valueCounts = ValueCounts();
