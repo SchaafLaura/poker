@@ -39,13 +39,6 @@ Console.WriteLine(player1Wins);
 Console.ReadLine();
 
 
-
-
-
-
-
-
-
 class Hand : IComparable
 {
     Card[] cards;
