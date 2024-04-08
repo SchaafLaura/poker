@@ -107,9 +107,11 @@ class Hand : IComparable
             var val = cards[i].value;
             for (int j = 1; j < n; j++)
                 if (val != cards[i - j].value)
-                    return false;
+                    goto Next;
+            return true;
+        Next:;
         }
-        return true;
+        return false; 
     }
 
     private bool IsHighCard()
