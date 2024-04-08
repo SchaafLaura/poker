@@ -45,6 +45,18 @@ Console.ReadLine();
 class Hand : IComparable
 {
     Card[] cards;
+    static Func<Card[], bool>[] checks = new Func<Card[], bool>[]
+    {
+        IsRoyalFlush,
+        IsStraightFlush,
+        IsFourOfAKind,
+        IsFullHouse,
+        IsFlush,
+        IsStraight,
+        IsThreeOfAKind,
+        IsTwoPair,
+        IsOnePair,
+    };
 
     public Hand(Card[] cards)
     {
@@ -54,14 +66,12 @@ class Hand : IComparable
 
     public Rank HeighestRank()
     {
-        if (IsRoyalFlush())
-            return Rank.ROYAL_FLUSH;
-
-        // bla bla others here
-
-
-
-
+        var funcs = new List<Func<bool>>();
+        foreach(var fun in funcs.Select((f, i) => new { index = i, fun = f }))
+        {
+            if (fun.fun())
+                return (Rank) fun.index;
+        }
         return Rank.HIGH_CARD;
     }
 
@@ -69,8 +79,12 @@ class Hand : IComparable
      * two pair
      */
 
+    private static bool IsTwoPair(Card[] cardS)
+    {
+        return true;
+    }
 
-    private bool IsFullHouse()
+    private static bool IsFullHouse(Card[] cards)
     {
         Dictionary<int, int> valueCounts = new();
 
@@ -87,22 +101,22 @@ class Hand : IComparable
 
 
 
-    private bool IsFourOfAKind()
+    private static bool IsFourOfAKind(Card[] cards)
     {
-        return IsNOfAKind(4);
+        return IsNOfAKind(cards, 4);
     }
 
-    private bool IsThreeOfAKind()
+    private static bool IsThreeOfAKind(Card[] cards)
     {
-        return IsNOfAKind(3);
+        return IsNOfAKind(cards, 3);
     }
 
-    private bool IsOnePair()
+    private static bool IsOnePair(Card[] cards)
     {
-        return IsNOfAKind(2);
+        return IsNOfAKind(cards, 2);
     }
-     
-    private bool IsNOfAKind(int n)
+
+    private static bool IsNOfAKind(Card[] cards, int n)
     {
         int[] cardCounts = new int[14];
         foreach(var card in cards)
@@ -114,22 +128,22 @@ class Hand : IComparable
         return false;
     }
 
-    private bool IsHighCard()
+    private static bool IsHighCard()
     {
         return true;
     }
 
-    private bool IsRoyalFlush()
+    private static bool IsRoyalFlush(Card[] cards)
     {
-        return IsStraightFlush() && cards[4].value == 14;
+        return IsStraightFlush(cards) && cards[4].value == 14;
     }
 
-    private bool IsStraightFlush()
+    private static bool IsStraightFlush(Card[] cards)
     {
-        return IsFlush() && IsStraight();
+        return IsFlush(cards) && IsStraight(cards);
     }
 
-    private bool IsFlush()
+    private static bool IsFlush(Card[] cards)
     {
         var suite = cards[0].suite;
         for (int i = 1; i < cards.Length; i++)
@@ -138,7 +152,7 @@ class Hand : IComparable
         return true;
     }
 
-    private bool IsStraight()
+    private static bool IsStraight(Card[] cards)
     {
         for (int i = 1; i < cards.Length; i++)
             if (cards[i].value != cards[i - 1].value + 1)
@@ -213,16 +227,16 @@ enum Suite
 
 enum Rank
 {
-    HIGH_CARD       = 1000,
-    ONE_PAIR        = 2000,
-    TWO_PAIRS       = 3000,
-    THREE_OF_A_KIND = 4000,
-    STRAIGHT        = 5000,
-    FLUSH           = 6000,
-    FULL_HOUSE      = 7000,
-    FOUR_OF_A_KIND  = 8000,
-    STRAIGHT_FLUSH  = 9000,
-    ROYAL_FLUSH     = 10000
+    ROYAL_FLUSH     = 0,
+    STRAIGHT_FLUSH  = 1,
+    FOUR_OF_A_KIND  = 2,
+    FULL_HOUSE      = 3,
+    FLUSH           = 4,
+    STRAIGHT        = 5,
+    THREE_OF_A_KIND = 6,
+    TWO_PAIRS       = 7,
+    ONE_PAIR        = 8,
+    HIGH_CARD       = 9
 }
 
 /*
