@@ -8,18 +8,33 @@ class Hand : IComparable
 
     public int CompareTo(object? obj)
     {
+        if (obj is not Card)
+            return -1;
+        if (obj == this)
+            return 0;
+
+
         throw new NotImplementedException();
     }
 }
 
-class Card
+class Card : IComparable
 {
-    int value;
-    Suite suite;
+    public int value;
+    public Suite suite;
     
     public Card(string str)
     {
 
+    }
+
+    public int CompareTo(object? obj)
+    {
+        if (obj is not Card)
+            return -1;
+        if (obj == this)
+            return 0;
+        return this.value.CompareTo(((Card)obj).value);
     }
 }
 
