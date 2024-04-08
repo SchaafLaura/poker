@@ -72,7 +72,7 @@ class Card : IComparable
         if (str.Count() != 2)
             throw new ArgumentException("`Card` class requires only 2 letters for the constructor");
 
-        var ok = int.TryParse(str[0] + "", out value);
+        var ok = int.TryParse(str[0].ToString(), out value);
 
         if (!ok)
         {
