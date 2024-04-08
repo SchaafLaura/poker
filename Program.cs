@@ -10,12 +10,18 @@ line = sr.ReadLine();
 while (line != null)
 {
     var split = line.Split(' ');
-    var hand1 = split.Take(new Range(0, 4));
-    var hand2 = split.Take(new Range(5, 10));
+    var split1 = split.Take(new Range(0, 5));
+    var split2 = split.Take(new Range(5, 10));
 
-    string h1 = "";
-    foreach(var str in hand1)
-        h1 += str;
+    var hand1 = new Card[5];
+    var hand2 = new Card[5];
+    int k = 0;
+    foreach (var str in split1)
+        hand1[k++] = new Card(str);
+    k = 0;
+    foreach (var str in split2)
+        hand2[k++] = new Card(str);
+
 
     string h2 = "";
     foreach (var str in hand2)
