@@ -48,6 +48,87 @@ class Hand : IComparable
     public Hand(Card[] cards)
     {
         this.cards = cards;
+        Array.Sort(this.cards);
+    }
+
+    public Rank HeighestRank()
+    {
+        if (IsRoyalFlush())
+            return Rank.ROYAL_FLUSH;
+
+        // bla bla others here
+
+
+
+
+        return Rank.HIGH_CARD;
+    }
+
+    /*TODO:
+     * full house
+     * two pair
+     */
+
+
+
+
+    private bool IsFourOfAKind()
+    {
+        return IsNOfAKind(4);
+    }
+
+    private bool IsThreeOfAKind()
+    {
+        return IsNOfAKind(3);
+    }
+
+    private bool IsOnePair()
+    {
+        return IsNOfAKind(2);
+    }
+
+    private bool IsNOfAKind(int n)
+    {
+        for (int i = n - 1; i < cards.Length; i++)
+        {
+            var val = cards[i].value;
+            for (int j = 1; j < n; j++)
+                if (val != cards[i - j].value)
+                    return false;
+        }
+        return true;
+    }
+
+    private bool IsHighCard()
+    {
+        return true;
+    }
+
+    private bool IsRoyalFlush()
+    {
+        return IsStraightFlush() && cards[4].value == 14;
+    }
+
+    private bool IsStraightFlush()
+    {
+        return IsFlush() && IsStraight();
+    }
+
+    private bool IsFlush()
+    {
+        var suite = cards[0].suite;
+        for (int i = 1; i < cards.Length; i++)
+            if (suite != cards[i].suite)
+                return false;
+        return true;
+    }
+
+    private bool IsStraight()
+    {
+        for (int i = 1; i < cards.Length; i++)
+            if (cards[i].value != cards[i - 1].value + 1)
+                return false;
+        return true;
     }
 
     public int CompareTo(object? obj)
@@ -115,7 +196,7 @@ enum Suite
     DIAMONDS
 }
 
-enum Combinations
+enum Rank
 {
     HIGH_CARD       = 1000,
     ONE_PAIR        = 2000,
