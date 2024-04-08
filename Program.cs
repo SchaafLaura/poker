@@ -2,6 +2,11 @@
 // See https://projecteuler.net/problem=54
 Console.WriteLine("Haiiii :3333");
 
+Card a = new Card("");
+Card b = new Card("");
+
+int test = a.CompareTo(b);
+
 class Hand : IComparable
 {
     Card[] cards;
@@ -31,7 +36,7 @@ class Card : IComparable
     public int CompareTo(object? obj)
     {
         if (obj is not Card)
-            return -1;
+            throw new ArgumentException("Object was not of type 'Card'.");
         if (obj == this)
             return 0;
         return this.value.CompareTo(((Card)obj).value);
