@@ -99,19 +99,17 @@ class Hand : IComparable
     {
         return IsNOfAKind(2);
     }
-
+     
     private bool IsNOfAKind(int n)
     {
-        for (int i = n - 1; i < cards.Length; i++)
+        int[] cardCounts = new int[14];
+        foreach(var card in cards)
         {
-            var val = cards[i].value;
-            for (int j = 1; j < n; j++)
-                if (val != cards[i - j].value)
-                    goto Next;
-            return true;
-        Next:;
+            cardCounts[card.value]++;
+            if (cardCounts[card.value] == n)
+                return true;
         }
-        return false; 
+        return false;
     }
 
     private bool IsHighCard()
