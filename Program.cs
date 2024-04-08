@@ -7,6 +7,7 @@ string line;
 StreamReader sr = new StreamReader("0054_poker.txt");
 line = sr.ReadLine();
 
+int player1Wins = 0;
 while (line != null)
 {
     var split = line.Split(' ');
@@ -22,16 +23,14 @@ while (line != null)
     foreach (var str in split2)
         hand2[k++] = new Card(str);
 
+    if ((new Hand(hand1)).CompareTo(new Hand(hand2)) > 0)
+        player1Wins++;
 
-    string h2 = "";
-    foreach (var str in hand2)
-        h2 += str;
 
-    Console.WriteLine(h1 + "-" + h2);
-    Console.WriteLine(line);
     line = sr.ReadLine();
 }
 sr.Close();
+Console.WriteLine(player1Wins);
 Console.ReadLine();
 
 
@@ -45,6 +44,11 @@ Console.ReadLine();
 class Hand : IComparable
 {
     Card[] cards;
+
+    public Hand(Card[] cards)
+    {
+        this.cards = cards;
+    }
 
     public int CompareTo(object? obj)
     {
