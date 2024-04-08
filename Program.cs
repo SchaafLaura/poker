@@ -85,6 +85,8 @@ class Hand : IComparable
         return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
     }
 
+
+
     private bool IsFourOfAKind()
     {
         return IsNOfAKind(4);
