@@ -21,8 +21,10 @@ while (line != null)
     var hand1 = new Card[5];
     var hand2 = new Card[5];
     int k = 0;
+
     foreach (var str in split1)
         hand1[k++] = new Card(str);
+
     k = 0;
     foreach (var str in split2)
         hand2[k++] = new Card(str);
@@ -67,7 +69,31 @@ class Card : IComparable
 
     public Card(string str)
     {
+        if (str.Count() != 2)
+            throw new ArgumentException("`Card` class requires only 2 letters for the constructor");
 
+        var sp = str.Split("");
+
+        var ok = int.TryParse(sp[0], out value);
+
+        if (!ok) {
+            value = sp[0] switch {
+                "T" => 10,
+                "J" => 11,
+                "Q" => 12,
+                "K" => 13,
+                "A" => 14,
+                _ => throw new Exception("AAAA")
+            };
+        }
+
+        suite = sp[1] switch {
+            "H" => Suite.HEARTS,
+            "C" => Suite.CLUBS,
+            "S" => Suite.SPADES,
+            "D" => Suite.DIAMONDS,
+            _ => throw new Exception("EXPLODE")
+        };
     }
 
     public int CompareTo(object? obj)
