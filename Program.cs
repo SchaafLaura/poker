@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 // See https://projecteuler.net/problem=54
 
-string line;
+string? line;
 StreamReader sr = new StreamReader("0054_poker.txt");
 line = sr.ReadLine();
 
@@ -74,8 +74,10 @@ class Card : IComparable
 
         var ok = int.TryParse(str[0] + "", out value);
 
-        if (!ok) {
-            value = str[0] switch {
+        if (!ok)
+        {
+            value = str[0] switch
+            {
                 'T' => 10,
                 'J' => 11,
                 'Q' => 12,
@@ -85,7 +87,8 @@ class Card : IComparable
             };
         }
 
-        suite = str[1] switch {
+        suite = str[1] switch
+        {
             'H' => Suite.HEARTS,
             'C' => Suite.CLUBS,
             'S' => Suite.SPADES,
@@ -110,6 +113,20 @@ enum Suite
     CLUBS,
     SPADES,
     DIAMONDS
+}
+
+enum Combinations
+{
+    HIGH_CARD       = 1000,
+    ONE_PAIR        = 2000,
+    TWO_PAIRS       = 3000,
+    THREE_OF_A_KIND = 4000,
+    STRAIGHT        = 5000,
+    FLUSH           = 6000,
+    FULL_HOUSE      = 7000,
+    FOUR_OF_A_KIND  = 8000,
+    STRAIGHT_FLUSH  = 9000,
+    ROYAL_FLUSH     = 10000
 }
 
 /*
