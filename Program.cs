@@ -70,19 +70,43 @@ class Hand : IComparable
      */
 
 
+    private bool IsTwoPair()
+    {
+        var valueCounts = ValueCounts();
+        if (valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3))
+            return true;
+
+        bool first = false;
+        foreach(var pair in valueCounts)
+        {
+            if(pair.Value == 2)
+            {
+                if (first)
+                    return true;
+                first = true;
+            }
+        }
+        return false;
+    }
+
     private bool IsFullHouse()
+    {
+        var valueCounts = ValueCounts();
+        return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
+    }
+
+    private Dictionary<int, int> ValueCounts()
     {
         Dictionary<int, int> valueCounts = new();
 
-        for(int i = 0; i < cards.Length; i++)
+        for (int i = 0; i < cards.Length; i++)
         {
             if (valueCounts.ContainsKey(cards[i].value))
                 valueCounts[cards[i].value]++;
             else
                 valueCounts.Add(cards[i].value, 1);
         }
-
-        return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
+        return valueCounts;
     }
 
 
