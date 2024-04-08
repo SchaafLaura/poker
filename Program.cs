@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 // See https://projecteuler.net/problem=54
 
-string line;
+string? line;
 StreamReader sr = new StreamReader("0054_poker.txt");
 line = sr.ReadLine();
 
