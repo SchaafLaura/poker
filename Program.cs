@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 // See https://projecteuler.net/problem=54
@@ -70,7 +71,20 @@ class Hand : IComparable
      */
 
 
+    private bool IsFullHouse()
+    {
+        Dictionary<int, int> valueCounts = new();
 
+        for(int i = 0; i < cards.Length; i++)
+        {
+            if (valueCounts.ContainsKey(cards[i].value))
+                valueCounts[cards[i].value]++;
+            else
+                valueCounts[cards[i].value] = 1;
+        }
+
+        return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
+    }
 
     private bool IsFourOfAKind()
     {
