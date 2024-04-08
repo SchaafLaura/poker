@@ -32,7 +32,7 @@ while (line != null)
     // create hands and compare them
     if (new Hand(hand1).CompareTo(new Hand(hand2)) > 0)
         player1Wins++;
-    
+
     // read the next line from the file
     line = sr.ReadLine();
 }
@@ -72,26 +72,24 @@ class Card : IComparable
         if (str.Count() != 2)
             throw new ArgumentException("`Card` class requires only 2 letters for the constructor");
 
-        var sp = str.Split("");
-
-        var ok = int.TryParse(sp[0], out value);
+        var ok = int.TryParse(str[0] + "", out value);
 
         if (!ok) {
-            value = sp[0] switch {
-                "T" => 10,
-                "J" => 11,
-                "Q" => 12,
-                "K" => 13,
-                "A" => 14,
+            value = str[0] switch {
+                'T' => 10,
+                'J' => 11,
+                'Q' => 12,
+                'K' => 13,
+                'A' => 14,
                 _ => throw new Exception("AAAA")
             };
         }
 
-        suite = sp[1] switch {
-            "H" => Suite.HEARTS,
-            "C" => Suite.CLUBS,
-            "S" => Suite.SPADES,
-            "D" => Suite.DIAMONDS,
+        suite = str[1] switch {
+            'H' => Suite.HEARTS,
+            'C' => Suite.CLUBS,
+            'S' => Suite.SPADES,
+            'D' => Suite.DIAMONDS,
             _ => throw new Exception("EXPLODE")
         };
     }
