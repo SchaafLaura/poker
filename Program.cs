@@ -67,15 +67,10 @@ class Hand : IComparable
 
     public Rank HeighestRank(Card[] cards)
     {
-        if (IsRoyalFlush(cards))
-            return Rank.ROYAL_FLUSH;
-
-        // bla bla others here
-
-
-
-
-        return Rank.HIGH_CARD;
+        for (int i = 0; i < checks.Length; i++)
+            if (checks[i](cards))
+                return (Rank)i;
+        throw new Exception("AAAAAAAAAHHHHHHHHHH");
     }
 
     private static bool IsTwoPair(Card[] cards)
@@ -245,16 +240,16 @@ enum Suite
 
 enum Rank
 {
-    HIGH_CARD       = 1000,
-    ONE_PAIR        = 2000,
-    TWO_PAIRS       = 3000,
-    THREE_OF_A_KIND = 4000,
-    STRAIGHT        = 5000,
-    FLUSH           = 6000,
-    FULL_HOUSE      = 7000,
-    FOUR_OF_A_KIND  = 8000,
-    STRAIGHT_FLUSH  = 9000,
-    ROYAL_FLUSH     = 10000
+    HIGH_CARD       = 0,
+    ONE_PAIR        = 1,
+    TWO_PAIRS       = 2,
+    THREE_OF_A_KIND = 3,
+    STRAIGHT        = 4,
+    FLUSH           = 5,
+    FULL_HOUSE      = 6,
+    FOUR_OF_A_KIND  = 7,
+    STRAIGHT_FLUSH  = 8,
+    ROYAL_FLUSH     = 9
 }
 
 /*
