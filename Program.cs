@@ -79,7 +79,7 @@ class Hand : IComparable
             if (valueCounts.ContainsKey(cards[i].value))
                 valueCounts[cards[i].value]++;
             else
-                valueCounts[cards[i].value] = 1;
+                valueCounts.Add(cards[i].value, 1);
         }
 
         return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
