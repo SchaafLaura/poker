@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// See https://projecteuler.net/problem=54
 Console.WriteLine("Haiiii :3333");
 
 
