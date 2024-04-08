@@ -27,7 +27,7 @@ class Card : IComparable
 {
     public int value;
     public Suite suite;
-    
+
     public Card(string str)
     {
 
@@ -36,7 +36,7 @@ class Card : IComparable
     public int CompareTo(object? obj)
     {
         if (obj is not Card)
-            throw new ArgumentException("Object was not of type 'Card'.");
+            throw new ArgumentException("Object wasn't a card :3");
         if (obj == this)
             return 0;
         return this.value.CompareTo(((Card)obj).value);
@@ -62,7 +62,7 @@ S = card Suite
 
 /*
 card Values:
-2 = 2 
+2 = 2
 3 = 3
 ...
 9 = 9
