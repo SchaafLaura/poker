@@ -140,7 +140,7 @@ class Hand : IComparable
         return false;
     }
 
-    private static bool IsHighCard()
+    private static bool IsHighCard(Card[] cards)
     {
         return true;
     }
