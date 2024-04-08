@@ -64,39 +64,51 @@ class Hand : IComparable
         Array.Sort(this.cards);
     }
 
-    public Rank HeighestRank()
+    public Rank HeighestRank(Card[] cards)
     {
-        var funcs = new List<Func<bool>>();
-        foreach(var fun in funcs.Select((f, i) => new { index = i, fun = f }))
-        {
-            if (fun.fun())
-                return (Rank) fun.index;
-        }
+        for (int i = 0; i < checks.Length; i++)
+            if (checks[i](cards))
+                return (Rank)i;
         return Rank.HIGH_CARD;
     }
 
-    /*TODO:
-     * two pair
-     */
-
-    private static bool IsTwoPair(Card[] cardS)
+    private static bool IsTwoPair(Card[] cards)
     {
-        return true;
+        var valueCounts = ValueCounts(cards);
+        if (valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3))
+            return true;
+
+        bool first = false;
+        foreach(var pair in valueCounts)
+        {
+            if(pair.Value == 2)
+            {
+                if (first)
+                    return true;
+                first = true;
+            }
+        }
+        return false;
     }
 
     private static bool IsFullHouse(Card[] cards)
     {
+        var valueCounts = ValueCounts(cards);
+        return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
+    }
+
+    private static Dictionary<int, int> ValueCounts(Card[] cards)
+    {
         Dictionary<int, int> valueCounts = new();
 
-        for(int i = 0; i < cards.Length; i++)
+        for (int i = 0; i < cards.Length; i++)
         {
             if (valueCounts.ContainsKey(cards[i].value))
                 valueCounts[cards[i].value]++;
             else
                 valueCounts.Add(cards[i].value, 1);
         }
-
-        return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
+        return valueCounts;
     }
 
 
