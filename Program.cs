@@ -2,9 +2,14 @@
 // See https://projecteuler.net/problem=54
 Console.WriteLine("Haiiii :3333");
 
-class Hand
+class Hand : IComparable
 {
     Card[] cards;
+
+    public int CompareTo(object? obj)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 class Card
