@@ -81,7 +81,7 @@ class Hand : IComparable
         bool first = false;
         foreach(var pair in valueCounts)
         {
-            if(pair.Value == 2)
+            if(pair.Value >= 2)
             {
                 if (first)
                     return true;
