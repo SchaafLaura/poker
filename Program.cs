@@ -45,8 +45,8 @@ Console.ReadLine();
 class Hand : IComparable
 {
     Card[] cards;
-    static Func<Card[], bool>[] checks = new Func<Card[], bool>[]
-    {
+    static Func<Card[], bool>[] checks =
+    [
         IsRoyalFlush,
         IsStraightFlush,
         IsFourOfAKind,
@@ -56,7 +56,7 @@ class Hand : IComparable
         IsThreeOfAKind,
         IsTwoPair,
         IsOnePair,
-    };
+    ];
 
     public Hand(Card[] cards)
     {
@@ -64,11 +64,216 @@ class Hand : IComparable
         Array.Sort(this.cards);
     }
 
-    public Rank HeighestRank(Card[] cards)
+    public int CompareTo(object? obj)
+    {
+        if (obj is not Hand)
+            return -1;
+        if (obj == this)
+            return 0;
+
+        var o = obj as Hand;
+
+        var rank =  HeighestRank();
+        var rankOther = o.HeighestRank();
+
+        var comparison = ((int)rank).CompareTo((int)rankOther);
+        if(comparison != 0) return comparison;
+
+
+        return rank switch
+        {
+            Rank.ROYAL_FLUSH        => throw new NotImplementedException(),
+            Rank.STRAIGHT_FLUSH     => CompareHighCard(cards, o.cards),
+            Rank.FOUR_OF_A_KIND     => CompareFourOfAKind(cards, o.cards),
+            Rank.FULL_HOUSE         => CompareFullHouse(cards, o.cards),
+            Rank.FLUSH              => CompareHighCard(cards, o.cards),
+            Rank.STRAIGHT           => CompareHighCard(cards, o.cards),
+            Rank.THREE_OF_A_KIND    => CompareThreeOfAKind(cards, o.cards),
+            Rank.TWO_PAIRS          => CompareTwoPair(cards, o.cards),
+            Rank.ONE_PAIR           => CompairOnePair(cards, o.cards),
+            Rank.HIGH_CARD          => CompareHighCard(cards, o.cards),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    public static int CompairOnePair(Card[] handA, Card[] handB)
+    {
+        var valueCountsA = ValueCounts(handA);
+        var valueCountsB = ValueCounts(handB);
+
+        int pairA = -1;
+        int pairB = -1;
+
+        foreach (var pair in valueCountsA)
+            if (pair.Value == 2)
+                pairA = pair.Key;
+
+        foreach (var pair in valueCountsB)
+            if (pair.Value == 2)
+                pairB = pair.Key;
+
+        var pairComparison = pairA.CompareTo(pairB);
+        if (pairComparison != 0)
+            return pairComparison;
+        return CompareHighCard(handA, handB);
+    }
+
+    public static int CompareTwoPair(Card[] handA, Card[] handB)
+    {
+        var valueCountsA = ValueCounts(handA);
+        var valueCountsB = ValueCounts(handB);
+
+        int highPairA = -1;
+        int highPairB = -1;
+        int lowPairA = -1;
+        int lowPairB = -1;
+
+        foreach (var pair in valueCountsA)
+            if (pair.Value == 2)
+            {
+                if (highPairA == -1)
+                    highPairA = pair.Key;
+                else if(pair.Key > highPairA)
+                {
+                    lowPairA = highPairA;
+                    highPairA = pair.Key;
+                }
+            }
+
+        foreach (var pair in valueCountsB)
+            if (pair.Value == 2)
+            {
+                if (highPairB == -1)
+                    highPairB = pair.Key;
+                else if (pair.Key > highPairB)
+                {
+                    lowPairB = highPairB;
+                    highPairB = pair.Key;
+                }
+            }
+
+        if (highPairA == -1 || highPairB == -1 || lowPairA == -1 || lowPairB == -1)
+            throw new ArgumentException("nuuuuuuuuuuu :((((((");
+
+        var highPairComparison = highPairA.CompareTo(highPairB);
+        if (highPairComparison != 0)
+            return highPairComparison;
+
+        var lowPairComparison = lowPairA.CompareTo(lowPairB);
+        if(lowPairComparison != 0)
+            return lowPairComparison;
+
+        return CompareHighCard(handA, handB);
+    }
+
+    public static int CompareThreeOfAKind(Card[] handA, Card[] handB)
+    {
+        var valueCountsA = ValueCounts(handA);
+        var valueCountsB = ValueCounts(handB);
+
+        int tripletA = -1;
+        int tripletB = -1;
+
+        foreach (var pair in valueCountsA)
+            if (pair.Value == 3)
+                tripletA = pair.Key;
+
+
+        foreach (var pair in valueCountsB)
+            if (pair.Value == 3)
+                tripletB = pair.Key;
+
+        if (tripletA == -1 || tripletB == -1)
+            throw new ArgumentException("I want to cry");
+
+        var tripletComparison = tripletA.CompareTo(tripletB);
+        if (tripletComparison != 0)
+            return tripletComparison;
+
+        return CompareHighCard(handA, handB);
+    }
+
+
+    public static int CompareFullHouse(Card[] handA, Card[] handB)
+    {
+        var valueCountsA = ValueCounts(handA);
+        var valueCountsB = ValueCounts(handB);
+
+        int tripletA = -1;
+        int tripletB = -1;
+        int pairA = -1;
+        int pairB = -1;
+
+        foreach (var pair in valueCountsA)
+            if (pair.Value == 3)
+                tripletA = pair.Key;
+            else if (pair.Value == 2)
+                pairA = pair.Key;
+            else
+                throw new ArgumentException("waaahhh");
+
+        foreach (var pair in valueCountsB)
+            if (pair.Value == 3)
+                tripletB = pair.Key;
+            else if (pair.Value == 2)
+                pairB = pair.Key;
+            else
+                throw new ArgumentException("waaahhh");
+
+        if (tripletA == -1 || tripletB == -1 || pairA == -1 || pairB == -1)
+            throw new ArgumentException("I am very sad");
+
+        var tripletComparison = tripletA.CompareTo(tripletB);
+        if(tripletComparison != 0)
+            return tripletComparison;
+
+        var pairComparison = pairA.CompareTo(pairB);
+        if(pairComparison != 0) 
+            return pairComparison;
+
+        throw new ArgumentException("same??! can't be...");
+    }
+
+    public static int CompareFourOfAKind(Card[] handA, Card[] handB)
+    {
+        var valueCountsA = ValueCounts(handA);
+        var valueCountsB = ValueCounts(handB);
+
+        int valA = -1;
+        foreach (var pair in valueCountsA)
+            if (pair.Value == 4)
+                valA = pair.Key;
+
+        int valB = -1;
+        foreach(var pair in valueCountsB)
+            if(pair.Value == 4)
+                valB = pair.Key;
+
+        if (valA == -1 || valB == -1)
+            throw new ArgumentException("somethin wrong :(((");
+
+        int comparison = valA.CompareTo(valB);
+        if (comparison != 0) return comparison;
+        return CompareHighCard(handA, handB);
+    }
+
+    public static int CompareHighCard(Card[] handA, Card[] handB)
+    {
+        for(int i = 0; i < handA.Length; i++)
+        {
+            int val = handA[i].value.CompareTo(handB[i].value);
+            if (val != 0)
+                return val;
+        }
+        throw new ArgumentException("somethin weird happened, sowwy");
+    }
+
+
+    public Rank HeighestRank()
     {
         for (int i = 0; i < checks.Length; i++)
             if (checks[i](cards))
-                return (Rank)i;
+                return (Rank)(9-i);
         return Rank.HIGH_CARD;
     }
 
@@ -128,7 +333,7 @@ class Hand : IComparable
 
     private static bool IsNOfAKind(Card[] cards, int n)
     {
-        int[] cardCounts = new int[14];
+        int[] cardCounts = new int[15];
         foreach(var card in cards)
         {
             cardCounts[card.value]++;
@@ -170,16 +375,7 @@ class Hand : IComparable
         return true;
     }
 
-    public int CompareTo(object? obj)
-    {
-        if (obj is not Hand)
-            return -1;
-        if (obj == this)
-            return 0;
-
-
-        throw new NotImplementedException();
-    }
+    
 }
 
 class Card : IComparable
@@ -237,14 +433,14 @@ enum Suite
 
 enum Rank
 {
-    ROYAL_FLUSH     = 0,
-    STRAIGHT_FLUSH  = 1,
-    FOUR_OF_A_KIND  = 2,
-    FULL_HOUSE      = 3,
-    FLUSH           = 4,
-    STRAIGHT        = 5,
-    THREE_OF_A_KIND = 6,
-    TWO_PAIRS       = 7,
-    ONE_PAIR        = 8,
-    HIGH_CARD       = 9
+    ROYAL_FLUSH     = 9,
+    STRAIGHT_FLUSH  = 8,
+    FOUR_OF_A_KIND  = 7,
+    FULL_HOUSE      = 6,
+    FLUSH           = 5,
+    STRAIGHT        = 4,
+    THREE_OF_A_KIND = 3,
+    TWO_PAIRS       = 2,
+    ONE_PAIR        = 1,
+    HIGH_CARD       = 0
 }
