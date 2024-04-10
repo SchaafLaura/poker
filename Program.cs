@@ -31,7 +31,7 @@ while (line != null)
         hand2[k++] = new Card(str);
 
     // create hands and compare them
-    if (new Hand(hand1).CompareTo(new Hand(hand2)) < 0)
+    if (new Hand(hand1).CompareTo(new Hand(hand2)) > 0)
         player1Wins++;
 
     // read the next line from the file
@@ -77,7 +77,8 @@ class Hand : IComparable
         var rankOther = o.HeighestRank();
 
         var comparison = ((int)rank).CompareTo((int)rankOther);
-        if(comparison != 0) return comparison;
+        if(comparison != 0) 
+            return comparison;
 
 
         return rank switch
@@ -259,7 +260,7 @@ class Hand : IComparable
 
     public static int CompareHighCard(Card[] handA, Card[] handB)
     {
-        for(int i = 0; i < handA.Length; i++)
+        for(int i = handA.Length - 1; i >= 0; i--)
         {
             int val = handA[i].value.CompareTo(handB[i].value);
             if (val != 0)
