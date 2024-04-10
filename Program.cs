@@ -31,7 +31,7 @@ while (line != null)
         hand2[k++] = new Card(str);
 
     // create hands and compare them
-    if (new Hand(hand1).CompareTo(new Hand(hand2)) > 0)
+    if (new Hand(hand1).CompareTo(new Hand(hand2)) < 0)
         player1Wins++;
 
     // read the next line from the file
@@ -299,7 +299,11 @@ class Hand : IComparable
     private static bool IsFullHouse(Card[] cards)
     {
         var valueCounts = ValueCounts(cards);
-        return valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
+        var isTrue = valueCounts.ContainsValue(2) && valueCounts.ContainsValue(3);
+        if (isTrue)
+            return true;
+        else
+            return false;
     }
 
     private static Dictionary<int, int> ValueCounts(Card[] cards)
@@ -350,7 +354,11 @@ class Hand : IComparable
 
     private static bool IsRoyalFlush(Card[] cards)
     {
-        return IsStraightFlush(cards) && cards[4].value == 14;
+        var isTrue = IsStraightFlush(cards) && cards[4].value == 14;
+        if (isTrue)
+            return true;
+        else
+            return false;
     }
 
     private static bool IsStraightFlush(Card[] cards)
@@ -374,8 +382,6 @@ class Hand : IComparable
                 return false;
         return true;
     }
-
-    
 }
 
 class Card : IComparable
